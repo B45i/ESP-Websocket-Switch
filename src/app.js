@@ -11,9 +11,14 @@ const io = new Server(httpServer, { cors: { origin: '*' } });
 app.use(express.static('src/ui'));
 
 io.on('connection', socket => {
-    console.log('a user connected');
+    console.log('New user connected');
+
     socket.on('disconnect', () => {
         console.log('user disconnected');
+    });
+
+    socket.on('buttonState', value => {
+        console.log(value);
     });
 });
 
