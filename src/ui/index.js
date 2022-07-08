@@ -1,14 +1,24 @@
 const socket = io();
 
-this.switch = document.getElementById('switch');
+const toggleBtn = document.getElementById('toggleBtn');
 
 let buttonState = false;
 
-this.switch.addEventListener('click', () => {
+toggleBtn.addEventListener('click', () => {
     buttonState = !buttonState;
-    buttonState
-        ? this.switch.classList.add('on')
-        : this.switch.classList.remove('on');
-    this.switch.innerText = buttonState ? 'Turn off' : 'Turn on';
+    updateUI();
     socket.emit('buttonState', buttonState);
+});
+
+const updateUI = () => {
+    buttonState
+        ? toggleBtn.classList.add('on')
+        : toggleBtn.classList.remove('on');
+    toggleBtn.innerText = buttonState ? 'Turn off' : 'Turn on';
+};
+
+socket.on('buttonState', state => {
+    console.log('updated state', state);
+    buttonState = state;
+    updateUI();
 });
